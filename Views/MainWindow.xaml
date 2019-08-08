@@ -1,0 +1,77 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:SCCRaceMode.ViewModels;assembly=SCCRaceMode"
+        xmlns:models="clr-namespace:SCCRaceMode.Models;assembly=SCCRaceMode"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SCCRaceMode.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="SCCRaceMode"
+        MinWidth="600"
+        MinHeight="600">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    <Grid Margin="4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"  MinWidth="200"/>
+            <ColumnDefinition Width="1*" MinWidth="200"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        
+        <DockPanel Grid.Row="0" Grid.Column="0" Margin="1">
+            <!-- Button export heat arangements-->
+            <Button DockPanel.Dock="Bottom" Command="{Binding Export}">Export</Button>
+
+            <!-- Button generate heat arangements-->
+            <Button DockPanel.Dock="Bottom" Command="{Binding Generate}">Generate heats</Button>
+
+            <!-- Heat and rounds configuration-->
+            <TextBox DockPanel.Dock="Bottom" Text="{Binding Rounds}"/>
+            <TextBox Text="Number of rounds:" DockPanel.Dock="Bottom" IsEnabled="False" BorderThickness="0"/>
+            <TextBox DockPanel.Dock="Bottom" Text="{Binding NumberHeats}"/>
+            <TextBox Text="Number heats:" DockPanel.Dock="Bottom" IsEnabled="False" BorderThickness="0"/>
+
+            <!-- Section to add drivers-->
+            <Button DockPanel.Dock="Bottom" Command="{Binding Add}">Add driver</Button>
+            <TextBox DockPanel.Dock="Bottom" AcceptsReturn="False" 
+                    Watermark="Driver name" 
+                    Text="{Binding DriverName}">
+                <TextBox.KeyBindings>
+                    <KeyBinding Gesture="Return" Command="{Binding Add}" />
+                </TextBox.KeyBindings>
+            </TextBox>
+            <ScrollViewer>
+                <ListBox Items="{Binding Drivers}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBox Margin="1" Text="{Binding Name}" IsEnabled="False" BorderThickness="0"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+        </DockPanel>
+        <DockPanel Grid.Row="0" Grid.Column="1" Margin="1">
+            <TreeView Items="{Binding RaceArangement}">
+                 <TreeView.DataTemplates>
+                    <!-- Round -->
+                    <TreeDataTemplate DataType="models:Round" ItemsSource="{Binding Heats}">
+                        <TextBlock Text="{Binding Description}" />
+                    </TreeDataTemplate>
+                    <!-- Heat -->
+                    <TreeDataTemplate DataType="models:Heat" ItemsSource="{Binding StartingGrid}">
+                        <TextBlock Text="{Binding Description}" />
+                    </TreeDataTemplate>
+                    <!-- Driver -->
+                    <DataTemplate DataType="models:Position">
+                        <TextBlock Text="{Binding DriverText}" />
+                    </DataTemplate>
+                 </TreeView.DataTemplates>
+            </TreeView>
+        </DockPanel>
+    </Grid>
+</Window>
