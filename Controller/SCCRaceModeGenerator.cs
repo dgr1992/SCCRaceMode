@@ -234,7 +234,7 @@ namespace SCCRaceMode.Controller
                 Driver[] driverArray = drivers.ToArray();
                 
                 //Pick random heat
-                int rndHeat = rnd.Next(0, _numHeats - 1);
+                int rndHeat = rnd.Next(0, _numHeats);
                 //Check if heat as free grid positions
                 while(round.Heats[rndHeat].FreeGridPositions <= 0)
                 {
@@ -251,18 +251,6 @@ namespace SCCRaceMode.Controller
                 while(!heat.StartingGrid[rndPostion - 1].IsFree())
                 {
                     rndPostion = rnd.Next(1,heat.StartingGrid.Length + 1);
-
-                    /*if(heat.FreeGridPositions == 1)
-                    {
-                        for(int i = 0; i < heat.StartingGrid.Length; i++)
-                        {
-                            if(heat.StartingGrid[i] == null)
-                            {
-                                rndPostion = i;
-                                break;
-                            }
-                        }
-                    }*/
                 }
 
                 //Get driver and remove him
